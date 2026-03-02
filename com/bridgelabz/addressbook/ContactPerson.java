@@ -1,6 +1,9 @@
 package com.bridgelabz.addressbook;
 
+import java.util.Objects;
+
 public class ContactPerson {
+
     private String firstName;
     private String lastName;
     private String address;
@@ -10,14 +13,13 @@ public class ContactPerson {
     private String phoneNumber;
     private String email;
 
-    public ContactPerson(String firstName, String lastName) {
-        this.firstName = firstName == null ? "" : firstName.trim();
-        this.lastName = lastName == null ? "" : lastName.trim();
-    }
+    public ContactPerson(String firstName, String lastName,
+                         String address, String city,
+                         String state, String zip,
+                         String phoneNumber, String email) {
 
-    public ContactPerson(String firstName, String lastName, String address, String city,
-                         String state, String zip, String phoneNumber, String email) {
-        this(firstName, lastName);
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.address = address;
         this.city = city;
         this.state = state;
@@ -26,30 +28,39 @@ public class ContactPerson {
         this.email = email;
     }
 
-    // getters & setters
     public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
     public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-    public String getAddress() { return address; }
+
     public void setAddress(String address) { this.address = address; }
-    public String getCity() { return city; }
     public void setCity(String city) { this.city = city; }
-    public String getState() { return state; }
     public void setState(String state) { this.state = state; }
-    public String getZip() { return zip; }
     public void setZip(String zip) { this.zip = zip; }
-    public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    // UC6 – Duplicate Check Logic
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ContactPerson)) return false;
+        ContactPerson that = (ContactPerson) o;
+        return firstName.equalsIgnoreCase(that.firstName)
+                && lastName.equalsIgnoreCase(that.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName.toLowerCase(), lastName.toLowerCase());
+    }
 
     @Override
     public String toString() {
-        return String.format("%s %s | %s, %s, %s %s | %s | %s",
-                safe(firstName), safe(lastName), safe(address), safe(city),
-                safe(state), safe(zip), safe(phoneNumber), safe(email));
+        return firstName + " " + lastName +
+                " | " + address +
+                " | " + city +
+                " | " + state +
+                " | " + zip +
+                " | " + phoneNumber +
+                " | " + email;
     }
-
-    private String safe(String s) { return s == null ? "" : s; }
 }

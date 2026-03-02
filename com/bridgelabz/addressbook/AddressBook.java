@@ -8,9 +8,17 @@ public class AddressBook {
 
     private List<ContactPerson> contacts = new ArrayList<>();
 
-    // UC1 – Add Contact
-    public void addContact(ContactPerson person) {
+    // UC6 – Add Contact with Duplicate Check
+    public boolean addContact(ContactPerson person) {
+
+        boolean isDuplicate = contacts.stream()
+                .anyMatch(existing -> existing.equals(person));
+
+        if (isDuplicate) {
+            return false;
+        }
         contacts.add(person);
+        return true;
     }
 
     // UC2 – Edit Contact

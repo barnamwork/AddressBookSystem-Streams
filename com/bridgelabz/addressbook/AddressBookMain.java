@@ -12,7 +12,6 @@ public class AddressBookMain {
 
         System.out.println("Welcome to Address Book Program");
 
-        // Create default address book
         system.createAddressBook("Default");
         currentAddressBook = system.getAddressBook("Default");
 
@@ -73,8 +72,12 @@ public class AddressBookMain {
 
     private static void addSingleContact() {
         ContactPerson person = readContactDetails();
-        currentAddressBook.addContact(person);
-        System.out.println("Contact Added Successfully!");
+        boolean added = currentAddressBook.addContact(person);
+
+        if (added)
+            System.out.println("Contact Added Successfully!");
+        else
+            System.out.println("Duplicate Contact! Entry Not Allowed.");
     }
 
     private static void addMultipleContacts() {
@@ -85,9 +88,11 @@ public class AddressBookMain {
         for (int i = 1; i <= count; i++) {
             System.out.println("\nEnter details for Contact " + i);
             ContactPerson person = readContactDetails();
-            currentAddressBook.addContact(person);
+            boolean added = currentAddressBook.addContact(person);
+
+            if (!added)
+                System.out.println("Duplicate Contact Skipped!");
         }
-        System.out.println("All Contacts Added!");
     }
 
     private static void editContact() {
