@@ -13,28 +13,32 @@ public class AddressBookMain {
 
         while (true) {
             System.out.println("\n1. Add Contact");
-            System.out.println("2. Edit Contact");
-            System.out.println("3. Delete Contact");
-            System.out.println("4. View Contacts");
-            System.out.println("5. Exit");
+            System.out.println("2. Add Multiple Contacts");
+            System.out.println("3. Edit Contact");
+            System.out.println("4. Delete Contact");
+            System.out.println("5. View Contacts");
+            System.out.println("6. Exit");
 
             System.out.print("Enter choice: ");
             int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1:
-                    addContact();
+                    addSingleContact();
                     break;
                 case 2:
-                    editContact();
+                    addMultipleContacts();
                     break;
                 case 3:
-                    deleteContact();
+                    editContact();
                     break;
                 case 4:
-                    viewContacts();
+                    deleteContact();
                     break;
                 case 5:
+                    viewContacts();
+                    break;
+                case 6:
                     System.out.println("Thank You");
                     return;
                 default:
@@ -43,7 +47,28 @@ public class AddressBookMain {
         }
     }
 
-    private static void addContact() {
+    // UC1 – Single Contact
+    private static void addSingleContact() {
+        ContactPerson person = readContactDetails();
+        addressBook.addContact(person);
+        System.out.println("Contact Added Successfully!");
+    }
+
+    // UC4 – Multiple Contacts
+    private static void addMultipleContacts() {
+
+        System.out.print("How many contacts do you want to add? ");
+        int count = Integer.parseInt(scanner.nextLine());
+
+        for (int i = 1; i <= count; i++) {
+            System.out.println("\nEnter details for Contact " + i);
+            ContactPerson person = readContactDetails();
+            addressBook.addContact(person);
+            System.out.println("Contact " + i + " Added!");
+        }
+    }
+
+    private static ContactPerson readContactDetails() {
 
         System.out.print("First Name: ");
         String firstName = scanner.nextLine();
@@ -69,13 +94,11 @@ public class AddressBookMain {
         System.out.print("Email: ");
         String email = scanner.nextLine();
 
-        ContactPerson person = new ContactPerson(
+        return new ContactPerson(
                 firstName, lastName, address, city, state, zip, phone, email);
-
-        addressBook.addContact(person);
-        System.out.println("Contact Added Successfully!");
     }
 
+    // UC2 – Edit
     private static void editContact() {
 
         System.out.print("Enter First Name to Edit: ");
@@ -113,6 +136,7 @@ public class AddressBookMain {
             System.out.println("Contact Not Found!");
     }
 
+    // UC3 – Delete
     private static void deleteContact() {
 
         System.out.print("Enter First Name to Delete: ");
