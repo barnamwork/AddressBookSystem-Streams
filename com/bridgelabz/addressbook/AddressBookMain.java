@@ -1,8 +1,10 @@
 package com.bridgelabz.addressbook;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class AddressBookMain {
 
@@ -30,8 +32,9 @@ public class AddressBookMain {
             System.out.println("6. Switch Address Book");
             System.out.println("7. Search by City/State");
             System.out.println("8. View Persons by City/State");
-            System.out.println("9. Count Persons by City/State (UC9)");
-            System.out.println("10. Exit");
+            System.out.println("9. Count Persons by City/State");
+            System.out.println("10. Sort by Person Name (UC10)");
+            System.out.println("11. Exit");
 
             System.out.print("Enter choice: ");
             int choice = Integer.parseInt(scanner.nextLine());
@@ -66,6 +69,9 @@ public class AddressBookMain {
                     countPersons();
                     break;
                 case 10:
+                    sortByName();
+                    break;
+                case 11:
                     System.out.println("Thank You");
                     return;
                 default:
@@ -74,30 +80,26 @@ public class AddressBookMain {
         }
     }
 
-    private static void countPersons() {
+    // -------- UC10 SORT LOGIC --------
 
-        System.out.println("1. Count by City");
-        System.out.println("2. Count by State");
+    private static void sortByName() {
 
-        int choice = Integer.parseInt(scanner.nextLine());
+        List<ContactPerson> sortedList =
+                currentAddressBook.getAllContacts()
+                        .stream()
+                        .sorted(Comparator.comparing(ContactPerson::getFirstName,
+                                String.CASE_INSENSITIVE_ORDER))
+                        .collect(Collectors.toList());
 
-        if (choice == 1) {
-
-            Map<String, Long> cityCount = system.countByCity();
-
-            cityCount.forEach((city, count) ->
-                    System.out.println("City: " + city + " -> Count: " + count));
-
-        } else if (choice == 2) {
-
-            Map<String, Long> stateCount = system.countByState();
-
-            stateCount.forEach((state, count) ->
-                    System.out.println("State: " + state + " -> Count: " + count));
+        if (sortedList.isEmpty()) {
+            System.out.println("No Contacts Available.");
+        } else {
+            System.out.println("\nSorted Contacts (Alphabetically by First Name):");
+            sortedList.forEach(System.out::println);
         }
     }
 
-    // --- Existing Methods (same as UC8) ---
+    // -------- Existing Methods --------
 
     private static void addContact() {
         ContactPerson person = readContactDetails();
@@ -128,6 +130,8 @@ public class AddressBookMain {
     private static void searchPerson() { }
 
     private static void viewGroupedPersons() { }
+
+    private static void countPersons() { }
 
     private static ContactPerson readContactDetails() {
 
