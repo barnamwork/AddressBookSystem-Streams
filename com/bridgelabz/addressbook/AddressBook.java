@@ -8,20 +8,19 @@ public class AddressBook {
 
     private List<ContactPerson> contacts = new ArrayList<>();
 
-    // UC6 – Add Contact with Duplicate Check
+    // -------- UC6 (STREAM USED HERE) --------
     public boolean addContact(ContactPerson person) {
 
-        boolean isDuplicate = contacts.stream()
+        boolean duplicate = contacts.stream()
                 .anyMatch(existing -> existing.equals(person));
 
-        if (isDuplicate) {
+        if (duplicate) {
             return false;
         }
         contacts.add(person);
         return true;
     }
 
-    // UC2 – Edit Contact
     public boolean editContact(String firstName, String lastName,
                                String address, String city,
                                String state, String zip,
@@ -45,7 +44,6 @@ public class AddressBook {
         return false;
     }
 
-    // UC3 – Delete Contact
     public boolean deleteContact(String firstName, String lastName) {
         return contacts.removeIf(p ->
                 p.getFirstName().equalsIgnoreCase(firstName)
