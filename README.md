@@ -66,7 +66,7 @@ Address-Book-System/
 ## How to Run
 1. Clone the repository
 ```
-   git clone https://github.com/Aaditya-Ranjan/Address-Book-System.git
+   git clone https://github.com/barnamwork/Address-Book-System.git
 ```
 2. Open in IntelliJ IDEA
 3. Mark `src` as Sources Root
@@ -96,5 +96,5 @@ Address-Book-System/
 ---
 
 ## Author
-**Aaditya Ranjan**
+**Barnam Das**
 BridgeLabz Fellowship Program
