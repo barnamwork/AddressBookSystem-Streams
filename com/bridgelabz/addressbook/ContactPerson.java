@@ -33,7 +33,9 @@ public class ContactPerson {
     public String getCity() {
         return city;
     }
-
+    public String getZip() {
+        return zip;
+    }
     public String getState() {
         return state;
     }

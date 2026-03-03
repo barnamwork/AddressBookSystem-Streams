@@ -33,45 +33,27 @@ public class AddressBookMain {
             System.out.println("7. Search by City/State");
             System.out.println("8. View Persons by City/State");
             System.out.println("9. Count Persons by City/State");
-            System.out.println("10. Sort by Person Name (UC10)");
-            System.out.println("11. Exit");
+            System.out.println("10. Sort by Person Name");
+            System.out.println("11. Sort by City/State/Zip (UC11)");
+            System.out.println("12. Exit");
 
             System.out.print("Enter choice: ");
             int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
 
-                case 1:
-                    addContact();
-                    break;
-                case 2:
-                    editContact();
-                    break;
-                case 3:
-                    deleteContact();
-                    break;
-                case 4:
-                    viewContacts();
-                    break;
-                case 5:
-                    createAddressBook();
-                    break;
-                case 6:
-                    switchAddressBook();
-                    break;
-                case 7:
-                    searchPerson();
-                    break;
-                case 8:
-                    viewGroupedPersons();
-                    break;
-                case 9:
-                    countPersons();
-                    break;
-                case 10:
-                    sortByName();
-                    break;
-                case 11:
+                case 1: addContact(); break;
+                case 2: editContact(); break;
+                case 3: deleteContact(); break;
+                case 4: viewContacts(); break;
+                case 5: createAddressBook(); break;
+                case 6: switchAddressBook(); break;
+                case 7: searchPerson(); break;
+                case 8: viewGroupedPersons(); break;
+                case 9: countPersons(); break;
+                case 10: sortByName(); break;
+                case 11: sortByCityStateZip(); break;
+                case 12:
                     System.out.println("Thank You");
                     return;
                 default:
@@ -80,23 +62,70 @@ public class AddressBookMain {
         }
     }
 
-    // -------- UC10 SORT LOGIC --------
+    // -------- UC10 --------
 
     private static void sortByName() {
 
-        List<ContactPerson> sortedList =
-                currentAddressBook.getAllContacts()
-                        .stream()
+        List<ContactPerson> sorted =
+                currentAddressBook.getAllContacts().stream()
                         .sorted(Comparator.comparing(ContactPerson::getFirstName,
                                 String.CASE_INSENSITIVE_ORDER))
                         .collect(Collectors.toList());
 
-        if (sortedList.isEmpty()) {
-            System.out.println("No Contacts Available.");
-        } else {
-            System.out.println("\nSorted Contacts (Alphabetically by First Name):");
-            sortedList.forEach(System.out::println);
+        printSortedList(sorted, "Sorted by Name");
+    }
+
+    // -------- UC11 --------
+
+    private static void sortByCityStateZip() {
+
+        System.out.println("1. Sort by City");
+        System.out.println("2. Sort by State");
+        System.out.println("3. Sort by Zip");
+
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        List<ContactPerson> sortedList = null;
+
+        switch (choice) {
+
+            case 1:
+                sortedList = currentAddressBook.getAllContacts().stream()
+                        .sorted(Comparator.comparing(ContactPerson::getCity,
+                                String.CASE_INSENSITIVE_ORDER))
+                        .collect(Collectors.toList());
+                printSortedList(sortedList, "Sorted by City");
+                break;
+
+            case 2:
+                sortedList = currentAddressBook.getAllContacts().stream()
+                        .sorted(Comparator.comparing(ContactPerson::getState,
+                                String.CASE_INSENSITIVE_ORDER))
+                        .collect(Collectors.toList());
+                printSortedList(sortedList, "Sorted by State");
+                break;
+
+            case 3:
+                sortedList = currentAddressBook.getAllContacts().stream()
+                        .sorted(Comparator.comparing(ContactPerson::getZip))
+                        .collect(Collectors.toList());
+                printSortedList(sortedList, "Sorted by Zip");
+                break;
+
+            default:
+                System.out.println("Invalid Choice!");
         }
+    }
+
+    private static void printSortedList(List<ContactPerson> list, String title) {
+
+        if (list.isEmpty()) {
+            System.out.println("No Contacts Available.");
+            return;
+        }
+
+        System.out.println("\n" + title + ":");
+        list.forEach(System.out::println);
     }
 
     // -------- Existing Methods --------
