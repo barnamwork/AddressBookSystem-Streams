@@ -23,9 +23,9 @@ public class AddressBookSystem {
         return addressBookMap.keySet();
     }
 
-    // UC7 – Search by City across ALL address books
-    public Map<String, List<ContactPerson>> searchByCity(String city) {
+    // -------- UC7 --------
 
+    public Map<String, List<ContactPerson>> searchByCity(String city) {
         return addressBookMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
@@ -36,9 +36,7 @@ public class AddressBookSystem {
                 ));
     }
 
-    // UC7 – Search by State across ALL address books
     public Map<String, List<ContactPerson>> searchByState(String state) {
-
         return addressBookMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
@@ -46,6 +44,44 @@ public class AddressBookSystem {
                                 .filter(p -> p.getState() != null &&
                                         p.getState().equalsIgnoreCase(state))
                                 .collect(Collectors.toList())
+                ));
+    }
+
+    // -------- UC8 --------
+
+    public Map<String, List<ContactPerson>> viewPersonsByCity() {
+        return addressBookMap.values().stream()
+                .flatMap(book -> book.getAllContacts().stream())
+                .filter(p -> p.getCity() != null)
+                .collect(Collectors.groupingBy(ContactPerson::getCity));
+    }
+
+    public Map<String, List<ContactPerson>> viewPersonsByState() {
+        return addressBookMap.values().stream()
+                .flatMap(book -> book.getAllContacts().stream())
+                .filter(p -> p.getState() != null)
+                .collect(Collectors.groupingBy(ContactPerson::getState));
+    }
+
+    // -------- UC9 --------
+
+    public Map<String, Long> countByCity() {
+        return addressBookMap.values().stream()
+                .flatMap(book -> book.getAllContacts().stream())
+                .filter(p -> p.getCity() != null)
+                .collect(Collectors.groupingBy(
+                        ContactPerson::getCity,
+                        Collectors.counting()
+                ));
+    }
+
+    public Map<String, Long> countByState() {
+        return addressBookMap.values().stream()
+                .flatMap(book -> book.getAllContacts().stream())
+                .filter(p -> p.getState() != null)
+                .collect(Collectors.groupingBy(
+                        ContactPerson::getState,
+                        Collectors.counting()
                 ));
     }
 }
