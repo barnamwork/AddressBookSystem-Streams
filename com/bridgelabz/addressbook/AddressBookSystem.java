@@ -23,9 +23,8 @@ public class AddressBookSystem {
         return addressBookMap.keySet();
     }
 
-    // UC7 – Search by City across ALL address books
+    // UC7 – Search by City
     public Map<String, List<ContactPerson>> searchByCity(String city) {
-
         return addressBookMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
@@ -36,9 +35,8 @@ public class AddressBookSystem {
                 ));
     }
 
-    // UC7 – Search by State across ALL address books
+    // UC7 – Search by State
     public Map<String, List<ContactPerson>> searchByState(String state) {
-
         return addressBookMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
@@ -47,5 +45,23 @@ public class AddressBookSystem {
                                         p.getState().equalsIgnoreCase(state))
                                 .collect(Collectors.toList())
                 ));
+    }
+
+    // UC8 – Group persons by City across ALL address books
+    public Map<String, List<ContactPerson>> viewPersonsByCity() {
+
+        return addressBookMap.values().stream()
+                .flatMap(book -> book.getAllContacts().stream())
+                .filter(p -> p.getCity() != null)
+                .collect(Collectors.groupingBy(ContactPerson::getCity));
+    }
+
+    // UC8 – Group persons by State across ALL address books
+    public Map<String, List<ContactPerson>> viewPersonsByState() {
+
+        return addressBookMap.values().stream()
+                .flatMap(book -> book.getAllContacts().stream())
+                .filter(p -> p.getState() != null)
+                .collect(Collectors.groupingBy(ContactPerson::getState));
     }
 }
